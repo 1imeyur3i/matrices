@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using System.Linq;
 
 namespace lab_collections
 {
-    class Matrix
+    public class Matrix
     {
         private double[,] arr = null;
 
@@ -19,6 +18,8 @@ namespace lab_collections
         {
             this.arr = new double[,] { { a, b }, { c, d } };
         }
+
+        public Matrix() { }
 //---------------------------------------------------------
         // двойной индексатор
         public double this[int i, int j]
@@ -116,20 +117,31 @@ namespace lab_collections
         {
             return arr[0, 0].ToString() + ' ' + arr[0, 1].ToString() + ' ' + arr[1, 0].ToString() + ' ' + arr[1, 1].ToString() + ' ';
         }
+//---------------------------------------------------------
+        public void PrintMatrix()
+        {
+            if (W == null)
+                throw new Exception("Матрица неверного формата");
+            else                
+                Console.WriteLine('[' + arr[0, 0].ToString() + ' ' + arr[0, 1].ToString() + ']' + '\n' +
+                              '[' + arr[1, 0].ToString() + ' ' + arr[1, 1].ToString() + ']');
+        }
 //---------------------------------------------------------------
         //переводит строку в матрицу, если формат не подходит, исключение
         public static Matrix Parse(string str)
         {
+            Matrix Q = new Matrix();
             try
-            {
-                var array = new List<double>();
+            {                
+                var array = new List<double>();                
                 foreach (var s in str.Split(',',';'))
                 {
                     array.Add(Convert.ToDouble(s));
                 }
-                if (array.Count == 4)
+                if (array.Count() == 4)
                 {
-                    return new Matrix(array[0], array[1], array[2], array[3]);
+                    Q = new Matrix(array[0], array[1], array[2], array[3]);
+                    
                 }
                 else
                 {
@@ -142,7 +154,7 @@ namespace lab_collections
                 Debug.WriteLine("Method: {0}", e.TargetSite);
                 Debug.WriteLine(e.Message);
             }
-            return null;
+            return Q;
         }
 //---------------------------------------------------------
     // пробует перевести строку в матрицу
@@ -155,7 +167,7 @@ namespace lab_collections
                 {
                     array.Add(Convert.ToDouble(s));
                 }
-                if (array.Count == 4)
+                if (array.Count() == 4)
                 {
                     Q = new Matrix(array[0], array[1], array[2], array[3]);
                     return true;
@@ -163,12 +175,14 @@ namespace lab_collections
                 else
                 {
                     Q = null;
+                    //Console.WriteLine("oh no");
                     return false;
                 }
             }
-            catch (Exception e)
+            catch
             {
                 Q = null;
+                //Console.WriteLine("oh no");
                 return false;
             }
         }
