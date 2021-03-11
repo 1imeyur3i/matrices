@@ -11,8 +11,6 @@ namespace lab_collections
     {
         private double[,] arr = null;
 
-        private Matrix W;
-
         // constructor
         public Matrix(double a, double b, double c, double d)
         {
@@ -23,15 +21,17 @@ namespace lab_collections
 //---------------------------------------------------------
         // двойной индексатор
         public double this[int i, int j]
-        {
+        {            
             set
-            {
+            {  
                 arr[i, j] = value;
+             
             }
 
             get
             {
                 return arr[i, j];
+               
             }
         }
 //---------------------------------------------------------
@@ -75,22 +75,14 @@ namespace lab_collections
         // обратная матрица
         public Matrix invMatrix(Matrix Q)
         {
-            try
-            {
+            Matrix W;
                 if (det(Q)==0)
                 {
-                    throw new Exception("Обратной матрицы не существует, данная матрица вырожденная.");
+                    throw new DivideByZeroException("Обратной матрицы не существует, данная матрица вырожденная.");
                 }
                 W = new Matrix(Q.arr[1,1],-Q.arr[0,1],-Q.arr[1,0],Q.arr[0,0]);
                 W = mult_const(W, 1 / det(Q));
-                
-            }
-            catch(Exception e)
-            {
-                Debug.WriteLine("\nError!");
-                Debug.WriteLine("Method: {0}", e.TargetSite);
-                Debug.WriteLine(e.Message);
-            }
+            
             return W;
         }
 //----------------------------------------------------------
@@ -117,24 +109,15 @@ namespace lab_collections
         {
             return arr[0, 0].ToString() + ' ' + arr[0, 1].ToString() + ' ' + arr[1, 0].ToString() + ' ' + arr[1, 1].ToString() + ' ';
         }
-//---------------------------------------------------------
-        public void PrintMatrix()
-        {
-            if (W == null)
-                throw new Exception("Матрица неверного формата");
-            else                
-                Console.WriteLine('[' + arr[0, 0].ToString() + ' ' + arr[0, 1].ToString() + ']' + '\n' +
-                              '[' + arr[1, 0].ToString() + ' ' + arr[1, 1].ToString() + ']');
-        }
+
 //---------------------------------------------------------------
         //переводит строку в матрицу, если формат не подходит, исключение
         public static Matrix Parse(string str)
         {
             Matrix Q = new Matrix();
-            try
-            {                
+                         
                 var array = new List<double>();                
-                foreach (var s in str.Split(',',';'))
+                foreach (var s in str.Split(new char[] { ',', ';', ' ' },StringSplitOptions.RemoveEmptyEntries))
                 {
                     array.Add(Convert.ToDouble(s));
                 }
@@ -145,15 +128,9 @@ namespace lab_collections
                 }
                 else
                 {
-                    throw new Exception("Формат строки неверный, введите четыре значения через , или ;");
+                    throw new FormatException("Формат строки неверный, введите четыре значения через , или ;");
                 }
-            }
-            catch(Exception e)
-            {
-                Debug.WriteLine("\nError!");
-                Debug.WriteLine("Method: {0}", e.TargetSite);
-                Debug.WriteLine(e.Message);
-            }
+           
             return Q;
         }
 //---------------------------------------------------------
@@ -162,27 +139,12 @@ namespace lab_collections
         {
             try
             {
-                var array = new List<double>();
-                foreach (var s in str.Split(',', ';'))
-                {
-                    array.Add(Convert.ToDouble(s));
-                }
-                if (array.Count() == 4)
-                {
-                    Q = new Matrix(array[0], array[1], array[2], array[3]);
-                    return true;
-                }
-                else
-                {
-                    Q = null;
-                    //Console.WriteLine("oh no");
-                    return false;
-                }
+                Q = Parse(str);
+                return true;
             }
             catch
             {
                 Q = null;
-                //Console.WriteLine("oh no");
                 return false;
             }
         }

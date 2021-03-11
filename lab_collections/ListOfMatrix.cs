@@ -25,7 +25,14 @@ namespace lab_collections
         {
             get
             {
-                return mlist[i];
+                try
+                {
+                    return mlist[i];
+                }
+                catch
+                {
+                    throw new IndexOutOfRangeException();
+                }
             }   
         }
  //---------------------------------------
@@ -91,15 +98,7 @@ namespace lab_collections
         {
             return mlist.ToArray();
         }
-        public void PrintList(ListOfMatrix mlist)
-        {
-            for (int k = 0; k < mlist.mCount(); k++)
-            {
-                mlist[k].PrintMatrix();
-                Console.WriteLine(' ');
-            }
-        }
-
+        
         public string[] ToStrArr()
         {
             string[] Result = new string[mlist.Count()];

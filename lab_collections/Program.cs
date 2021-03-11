@@ -17,6 +17,7 @@ namespace lab_collections
                               "2. Ввод списка матриц через файл.\n" +
                               "3. Вывод списка на консоль.\n" +
                               "4. Вывод информации о списке\n" +
+                              "5. Вывод элемента списка под номером\n"+
                               "0. Выход\n"+
                               "=======================================\n"+
                               "Расчеты проводятся для последней введенной матрицы.");
@@ -155,6 +156,20 @@ namespace lab_collections
                         microMenu(ML);                       
                         break;
                     case "5":
+                        int n;
+                        Console.WriteLine("Введите номер матрицы: ");
+                        n = Convert.ToInt32(Console.ReadLine());
+                        try
+                        {
+                            Console.WriteLine(ML[n].ToString());
+                        }
+                        catch(IndexOutOfRangeException e)
+                        {
+                            Console.WriteLine("Такого элемента не существует.");
+                        }
+                        Menu(ML);
+                        break;
+                    case "0":
                         Environment.Exit(0);
                         break;
                     default:

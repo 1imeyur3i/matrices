@@ -70,23 +70,19 @@ namespace lab_collections
             
             foreach (string s in Text)
             {
-                try
-                {
+                
                     if (Matrix.TryParse(s, out M))
                     {
-                        ML.add_elem(Matrix.Parse(s));
+                        ML.add_elem(M);
                     }
                     else
                     {
+                        Console.WriteLine("В файле есть строка неверного формата:' " + s + " '. Она не будет добавлена.");
                         throw new Exception("Неверный формат!");
                     }
-                }
-                catch(Exception e)
-                {
-                    Debug.WriteLine("\nError!");
-                    Debug.WriteLine("Method: {0}", e.TargetSite);
-                    Debug.WriteLine(e.Message);
-                }
+                
+                //обработать формат искл
+                // обычнеы обрабатывать в мейне
             }
             return ML;
 
